@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = obtenerJWTdeLaSolicitud(request);
 
             //validamos el token
-            if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+            if (token != null && jwtTokenProvider.validateToken(token)) {
                 //obtenemos el username del token
                 String username = jwtTokenProvider.getUsernameFromJwt(token);
 
@@ -57,10 +57,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     //Bearer token de acceso
     private String obtenerJWTdeLaSolicitud(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7, bearerToken.length());
-        }
+        String header = request.getHeader("Authorization");
+        if(header != null && header.startsWith("Bearer"))
+            return header.replace("Bearer ", "");
         return null;
     }
 }

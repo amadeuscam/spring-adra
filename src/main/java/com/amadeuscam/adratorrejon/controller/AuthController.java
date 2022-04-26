@@ -28,10 +28,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin
 public class AuthController {
 
     @Autowired
@@ -72,8 +74,8 @@ public class AuthController {
 
         //obtenemos el token del jwtTokenProvider
         String token = jwtTokenProvider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return ResponseEntity.ok(new JWTAuthResponseDTO(token, userDetails.getUsername(), userDetails.getAuthorities()));
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return ResponseEntity.ok(new JWTAuthResponseDTO(token));
     }
 
     @PostMapping(value = "/register")
@@ -107,6 +109,13 @@ public class AuthController {
 
         return new ResponseEntity<>(Collections.singletonMap("response", "usuario creado"), HttpStatus.CREATED);
 
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<JWTAuthResponseDTO> refresh(@RequestBody JWTAuthResponseDTO jwtDto) throws ParseException {
+        String token = jwtTokenProvider.refreshToken(jwtDto);
+        JWTAuthResponseDTO jwt = new JWTAuthResponseDTO(token);
+        return new ResponseEntity(jwt, HttpStatus.OK);
     }
 
 }
