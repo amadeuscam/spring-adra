@@ -4,6 +4,7 @@ import com.amadeuscam.adratorrejon.dto.BeneficiarioDTO;
 import com.amadeuscam.adratorrejon.dto.BeneficiarioResponse;
 import com.amadeuscam.adratorrejon.services.BeneficiarioService;
 import com.amadeuscam.adratorrejon.utils.AppConstants;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class BeneficiarioController {
     @Autowired
     private BeneficiarioService beneficiarioService;
 
+    @ApiOperation("Muestra la lista de beneficiarios")
     @GetMapping
     public BeneficiarioResponse lstBeneficiarios(
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER_DEFAULT, required = false) int numPage,

@@ -45,6 +45,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByUsername(nombreUsuario);
     }
 
+    @Override
+    public Optional<Usuario> findByEmailOrUsername(String nameOrEmail) {
+        return usuarioRepository.findByEmailOrUsername(nameOrEmail, nameOrEmail);
+    }
+
     public void save(Usuario usuario) {
         usuarioRepository.save(usuario);
     }

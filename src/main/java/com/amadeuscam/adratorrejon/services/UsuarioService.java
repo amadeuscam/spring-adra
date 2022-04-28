@@ -16,6 +16,8 @@ public interface UsuarioService {
 
     public Optional<Usuario> getByUserName(String nombreUsuario);
 
+    public Optional<Usuario> findByEmailOrUsername(String nameOrEmail);
+
     public void save(Usuario usuario);
 
 }
