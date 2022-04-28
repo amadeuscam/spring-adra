@@ -18,6 +18,8 @@ public interface UsuarioService {
 
     public Optional<Usuario> findByEmailOrUsername(String nameOrEmail);
 
+    public Optional<Usuario> findByTokenPassword(String tokenPassword);
+
     public void save(Usuario usuario);
 
 }

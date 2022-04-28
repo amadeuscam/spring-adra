@@ -50,6 +50,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByEmailOrUsername(nameOrEmail, nameOrEmail);
     }
 
+    @Override
+    public Optional<Usuario> findByTokenPassword(String tokenPassword) {
+        return usuarioRepository.findByTokenPassword(tokenPassword);
+    }
+
     public void save(Usuario usuario) {
         usuarioRepository.save(usuario);
     }

@@ -1,11 +1,9 @@
 package com.amadeuscam.adratorrejon.controller;
 
-import com.amadeuscam.adratorrejon.dto.FamiliarDTO;
 import com.amadeuscam.adratorrejon.dto.LoginDTO;
 import com.amadeuscam.adratorrejon.dto.RegistryDTO;
 import com.amadeuscam.adratorrejon.dto.UsuarioDTO;
 import com.amadeuscam.adratorrejon.enums.RolName;
-import com.amadeuscam.adratorrejon.exceptions.AdraAppException;
 import com.amadeuscam.adratorrejon.models.Rol;
 import com.amadeuscam.adratorrejon.models.Usuario;
 import com.amadeuscam.adratorrejon.repository.RolRepository;
@@ -16,20 +14,20 @@ import com.amadeuscam.adratorrejon.services.RolService;
 import com.amadeuscam.adratorrejon.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/auth")
