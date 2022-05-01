@@ -39,11 +39,14 @@ public class EmailController {
         return new ResponseEntity("Correo enviado con exito!", HttpStatus.OK);
     }
 
-    @PostMapping("/send-html")
-    public ResponseEntity<?> sendEmailTemplate(@RequestBody EmailValuesDTO dto) {
+    @PostMapping("/send-email")
+    public ResponseEntity<?> sendEmailTemplate(@Valid @RequestBody EmailValuesDTO dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity(Collections.singletonMap("response", "campos mal puestos"), HttpStatus.BAD_REQUEST);
+        }
         Optional<Usuario> usuarioOptional = usuarioService.findByEmailOrUsername(dto.getMailTo());
         if (!usuarioOptional.isPresent()) {
-            return new ResponseEntity<>(Collections.singletonMap("response", "No existe ningun usuarioo con estas credenciales"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Collections.singletonMap("response", "No existe ningun usuario con estas credenciales"), HttpStatus.NOT_FOUND);
         }
         Usuario usuario = usuarioOptional.get();
         UUID uuid = UUID.randomUUID();
@@ -56,7 +59,7 @@ public class EmailController {
         usuario.setTokenPassword(tokenPassword);
         usuarioService.save(usuario);
         emailService.sendEmailTemplate(dto);
-        return new ResponseEntity("Correo plantilla enviado con exito!", HttpStatus.OK);
+        return new ResponseEntity(Collections.singletonMap("response", "Correo enviado con exito!"), HttpStatus.OK);
     }
 
     @PostMapping("/change-password")

@@ -62,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         "/api/v1/auth/**",
+                        "/api/v1/email/**",
                         "/v2/api-docs/**",
                         "/swagger-ui/**",
                         "/swagger-resources/**",
