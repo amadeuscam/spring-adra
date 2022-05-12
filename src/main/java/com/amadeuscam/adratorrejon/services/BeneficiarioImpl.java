@@ -26,6 +26,7 @@ public class BeneficiarioImpl implements BeneficiarioService {
 
     @Override
     public BeneficiarioDTO createBeneficiario(BeneficiarioDTO beneficiarioDTO) {
+
         Beneficiario beneficiario = mapearEntity(beneficiarioDTO);
         Beneficiario newBeneficiario = beneficiarioRepository.save(beneficiario);
         return mapearDTO(newBeneficiario);

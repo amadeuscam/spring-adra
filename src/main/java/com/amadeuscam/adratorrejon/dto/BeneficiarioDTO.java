@@ -2,6 +2,7 @@ package com.amadeuscam.adratorrejon.dto;
 
 import com.amadeuscam.adratorrejon.models.Alimento;
 import com.amadeuscam.adratorrejon.models.Familiar;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +20,6 @@ public class BeneficiarioDTO {
     private Long id;
     @NotEmpty
     private String nombreapellido;
-    @NotEmpty
     private String dni;
     private String otrosdocumentos;
     @NotNull
@@ -28,7 +28,7 @@ public class BeneficiarioDTO {
     private Integer numeroadra;
     @NotEmpty
     private String nacionalidad;
-    @NotNull
+
     private boolean covid;
     @NotEmpty
     private String domicilio;
@@ -50,24 +50,23 @@ public class BeneficiarioDTO {
     private boolean discapacidad;
     @NotEmpty
     private String categoria;
-    @NotNull
+
     private boolean empadronamiento;
-    @NotNull
+
     private boolean librofamilia;
-    @NotNull
+
     private boolean fotocopiadni;
-    @NotNull
+
     private boolean prestaciones;
-    @NotNull
+
     private boolean nomnia;
-    @NotNull
+
     private boolean certnegativo;
-    @NotNull
+
     private boolean aquilerhipoteca;
-    @NotNull
+
     private boolean recibos;
-
-
+    @JsonIgnore
     private boolean tienebaby;
 
     private Integer edad;
@@ -80,5 +79,9 @@ public class BeneficiarioDTO {
 
     public boolean isTienebaby() {
         return this.familiares.stream().anyMatch(familiar -> familiar.getEdad() < 3);
+    }
+
+    public void setTienebaby(boolean tienebaby) {
+        this.tienebaby = tienebaby;
     }
 }

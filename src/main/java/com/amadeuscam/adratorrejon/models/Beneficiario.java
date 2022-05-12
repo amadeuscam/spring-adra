@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "beneficiarios", uniqueConstraints = {@UniqueConstraint(columnNames = {"nombreapellido"}), @UniqueConstraint(columnNames = {"numeroadra"})})
+@Table(name = "beneficiarios")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class Beneficiario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "nombreapellido", nullable = false)
+    @Column(name = "nombreapellido", nullable = false, unique = true)
     private String nombreapellido;
     @Column(name = "dni")
     private String dni;
@@ -31,7 +31,7 @@ public class Beneficiario {
     private LocalDate fechanacimiento;
     @Transient // cu acest decorador esta columna no se salva en base de datos
     private Integer edad;
-    @Column(name = "numeroadra", nullable = false)
+    @Column(name = "numeroadra", nullable = false, unique = true)
     private Integer numeroadra;
     @Column(name = "nacionalidad", nullable = false)
     private String nacionalidad;

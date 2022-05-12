@@ -77,18 +77,19 @@ public class AlimentoImpl implements AlimentoService {
         if (!alimento.getBeneficiario().getId().equals(beneficiario.getId())) {
             throw new AdraAppException(HttpStatus.BAD_REQUEST, "El Alimento no tiene beneficiario");
         }
-        alimento.setAlimento1(alimentoDTO.getAlimento1());
-        alimento.setAlimento2(alimentoDTO.getAlimento2());
-        alimento.setAlimento3(alimentoDTO.getAlimento3());
-        alimento.setAlimento4(alimentoDTO.getAlimento4());
-        alimento.setAlimento5(alimentoDTO.getAlimento5());
-        alimento.setAlimento6(alimentoDTO.getAlimento6());
-        alimento.setAlimento7(alimentoDTO.getAlimento7());
-        alimento.setAlimento8(alimentoDTO.getAlimento8());
-        alimento.setAlimento9(alimentoDTO.getAlimento9());
-        alimento.setAlimento10(alimentoDTO.getAlimento10());
-        alimento.setAlimento11(alimentoDTO.getAlimento11());
-        alimento.setAlimento12(alimentoDTO.getAlimento12());
+//        alimento.setAlimento1(alimentoDTO.getAlimento1());
+//        alimento.setAlimento2(alimentoDTO.getAlimento2());
+//        alimento.setAlimento3(alimentoDTO.getAlimento3());
+//        alimento.setAlimento4(alimentoDTO.getAlimento4());
+//        alimento.setAlimento5(alimentoDTO.getAlimento5());
+//        alimento.setAlimento6(alimentoDTO.getAlimento6());
+//        alimento.setAlimento7(alimentoDTO.getAlimento7());
+//        alimento.setAlimento8(alimentoDTO.getAlimento8());
+//        alimento.setAlimento9(alimentoDTO.getAlimento9());
+//        alimento.setAlimento10(alimentoDTO.getAlimento10());
+//        alimento.setAlimento11(alimentoDTO.getAlimento11());
+//        alimento.setAlimento12(alimentoDTO.getAlimento12());
+//        alimento.setAlimento13(alimentoDTO.getAlimento13());
         alimento.setUpdatedDate(Instant.now());
         alimento.setCreatedDate(Instant.now());
         Alimento alimentoUpdate = alimentoRepository.save(alimento);
