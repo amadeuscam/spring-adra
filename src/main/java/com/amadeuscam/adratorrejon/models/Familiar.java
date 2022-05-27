@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
-@Table(name = "familiares", uniqueConstraints = {@UniqueConstraint(columnNames = {"nombreapellido"})})
+@Table(name = "familiares", uniqueConstraints = @UniqueConstraint(columnNames = {"nombreapellido"}))
 @Getter
 @Setter
 public class Familiar {
@@ -17,10 +17,13 @@ public class Familiar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "nombreapellido", nullable = false)
     private String nombreapellido;
+
     @Column(name = "parentesco", nullable = false)
     private String parentesco;
+
     @Column(name = "sexo", nullable = false)
     private String sexo;
     @Column(name = "dni")

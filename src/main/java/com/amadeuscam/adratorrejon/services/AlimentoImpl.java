@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,25 +31,25 @@ public class AlimentoImpl implements AlimentoService {
 
 
     @Override
-    public AlimentoDTO createAlimento(long beneficiario_id, AlimentoDTO alimentoDTO) {
+    public AlimentoDTO createAlimento(UUID beneficiario_id, AlimentoDTO alimentoDTO) {
         Alimento alimento = mapearEntity(alimentoDTO);
-        Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).orElseThrow(() -> new ResourceNotFound("Publicacion", "id", beneficiario_id));
+        Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).orElseThrow(() -> new ResourceNotFound("Publicacion", "id", beneficiario_id.toString()));
         alimento.setBeneficiario(beneficiario);
         Alimento newAlimentos = alimentoRepository.save(alimento);
         return mapearDTO(newAlimentos);
     }
 
     @Override
-    public List<AlimentoDTO> getAllAlimentosPerBeneficarioId(long beneficiario_id) {
+    public List<AlimentoDTO> getAllAlimentosPerBeneficarioId(UUID beneficiario_id) {
         List<Alimento> alimentos = alimentoRepository.findByBeneficiarioId(beneficiario_id);
         return alimentos.stream().map(alimento -> mapearDTO(alimento)).collect(Collectors.toList());
     }
 
     @Override
-    public AlimentoDTO getAlimentosById(long beneficiario_id, long al_id) {
-        Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id));
+    public AlimentoDTO getAlimentosById(UUID beneficiario_id, long al_id) {
+        Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id.toString()));
 
-        Alimento alimento = alimentoRepository.findById(al_id).orElseThrow(() -> new ResourceNotFound("Alimento", "id", al_id));
+        Alimento alimento = alimentoRepository.findById(al_id).orElseThrow(() -> new ResourceNotFound("Alimento", "id", String.valueOf(al_id)));
 
         if (!alimento.getBeneficiario().getId().equals(beneficiario.getId())) {
             throw new AdraAppException(HttpStatus.BAD_REQUEST, "El Alimento no tiene beneficiario");
@@ -57,10 +58,10 @@ public class AlimentoImpl implements AlimentoService {
     }
 
     @Override
-    public void deleteAlimentos(long beneficiario_id, long al_id) {
-        Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id));
+    public void deleteAlimentos(UUID beneficiario_id, long al_id) {
+        Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id.toString()));
 
-        Alimento alimento = alimentoRepository.findById(al_id).orElseThrow(() -> new ResourceNotFound("Alimento", "id", al_id));
+        Alimento alimento = alimentoRepository.findById(al_id).orElseThrow(() -> new ResourceNotFound("Alimento", "id", String.valueOf(al_id)));
 
         if (!alimento.getBeneficiario().getId().equals(beneficiario.getId())) {
             throw new AdraAppException(HttpStatus.BAD_REQUEST, "El Alimento no tiene beneficiario");
@@ -68,30 +69,32 @@ public class AlimentoImpl implements AlimentoService {
         alimentoRepository.delete(alimento);
     }
 
-    @Override
-    public AlimentoDTO updateAlimentos(AlimentoDTO alimentoDTO, Long beneficiario_id, Long al_id) {
-        Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id));
 
-        Alimento alimento = alimentoRepository.findById(al_id).orElseThrow(() -> new ResourceNotFound("Alimento", "id", al_id));
+
+    public AlimentoDTO updateAlimentos(AlimentoDTO alimentoDTO, UUID beneficiario_id, Long al_id) {
+        Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id.toString()));
+
+        Alimento alimento = alimentoRepository.findById(al_id).orElseThrow(() -> new ResourceNotFound("Alimento", "id", String.valueOf(al_id)));
 
         if (!alimento.getBeneficiario().getId().equals(beneficiario.getId())) {
             throw new AdraAppException(HttpStatus.BAD_REQUEST, "El Alimento no tiene beneficiario");
         }
-//        alimento.setAlimento1(alimentoDTO.getAlimento1());
-//        alimento.setAlimento2(alimentoDTO.getAlimento2());
-//        alimento.setAlimento3(alimentoDTO.getAlimento3());
-//        alimento.setAlimento4(alimentoDTO.getAlimento4());
-//        alimento.setAlimento5(alimentoDTO.getAlimento5());
-//        alimento.setAlimento6(alimentoDTO.getAlimento6());
-//        alimento.setAlimento7(alimentoDTO.getAlimento7());
-//        alimento.setAlimento8(alimentoDTO.getAlimento8());
-//        alimento.setAlimento9(alimentoDTO.getAlimento9());
-//        alimento.setAlimento10(alimentoDTO.getAlimento10());
-//        alimento.setAlimento11(alimentoDTO.getAlimento11());
-//        alimento.setAlimento12(alimentoDTO.getAlimento12());
-//        alimento.setAlimento13(alimentoDTO.getAlimento13());
+        alimento.setAlimento1(alimentoDTO.getAlimento1());
+        alimento.setAlimento2(alimentoDTO.getAlimento2());
+        alimento.setAlimento3(alimentoDTO.getAlimento3());
+        alimento.setAlimento4(alimentoDTO.getAlimento4());
+        alimento.setAlimento5(alimentoDTO.getAlimento5());
+        alimento.setAlimento6(alimentoDTO.getAlimento6());
+        alimento.setAlimento7(alimentoDTO.getAlimento7());
+        alimento.setAlimento8(alimentoDTO.getAlimento8());
+        alimento.setAlimento9(alimentoDTO.getAlimento9());
+        alimento.setAlimento10(alimentoDTO.getAlimento10());
+        alimento.setAlimento11(alimentoDTO.getAlimento11());
+        alimento.setAlimento12(alimentoDTO.getAlimento12());
+        alimento.setAlimento13(alimentoDTO.getAlimento13());
+        alimento.setSignature(alimentoDTO.getSignature());
         alimento.setUpdatedDate(Instant.now());
-        alimento.setCreatedDate(Instant.now());
+//        alimento.setCreatedDate(Instant.now());
         Alimento alimentoUpdate = alimentoRepository.save(alimento);
         return mapearDTO(alimentoUpdate);
     }

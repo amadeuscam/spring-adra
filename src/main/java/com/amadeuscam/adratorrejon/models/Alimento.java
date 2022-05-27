@@ -45,6 +45,7 @@ public class Alimento {
     @Column(name = "AceiteOliva", nullable = false)
     private int alimento13;
     @Column(name = "signature", nullable = true)
+    @Lob
     private String signature;
     private Instant createdDate = Instant.now();
     private Instant updatedDate = Instant.now();

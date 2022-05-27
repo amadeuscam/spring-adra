@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/beneficiarios")
@@ -32,8 +34,9 @@ public class BeneficiarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BeneficiarioDTO> getBeneficiario(@PathVariable(name = "id") long id) {
-        return ResponseEntity.ok(beneficiarioService.getBeneficiarioById(id));
+    public ResponseEntity<BeneficiarioDTO> getBeneficiario(@PathVariable(name = "id") String id) {
+        System.out.println(UUID.fromString(id));
+        return ResponseEntity.ok(beneficiarioService.getBeneficiarioById(UUID.fromString(id)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -45,7 +48,7 @@ public class BeneficiarioController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<BeneficiarioDTO> updateBeneficiarioById(
-            @PathVariable(value = "id") Long ben_id,
+            @PathVariable(value = "id") UUID ben_id,
             @Valid @RequestBody BeneficiarioDTO beneficiarioDTO) {
 
         return new ResponseEntity<>(beneficiarioService.updateBeneficiario(beneficiarioDTO, ben_id), HttpStatus.OK);
@@ -54,8 +57,8 @@ public class BeneficiarioController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePublicacion(@PathVariable(name = "id") long id) {
+    public ResponseEntity<?> deletePublicacion(@PathVariable(name = "id") UUID id) {
         beneficiarioService.deleteBeneficiaioById(id);
-        return new ResponseEntity<>("Se ha borado el beneficario con exito!", HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("response", "Se ha borado el beneficario con exito!"), HttpStatus.OK);
     }
 }

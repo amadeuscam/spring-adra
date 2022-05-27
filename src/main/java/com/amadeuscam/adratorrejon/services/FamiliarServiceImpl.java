@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,10 +34,10 @@ public class FamiliarServiceImpl implements FamiliarService {
      * @return la version json del familiar
      */
     @Override
-    public FamiliarDTO createFamiliar(long beneficiario_id, FamiliarDTO familiarDTO) {
+    public FamiliarDTO createFamiliar(UUID beneficiario_id, FamiliarDTO familiarDTO) {
         Familiar familiar = mapearEntity(familiarDTO);
         Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).
-                orElseThrow(() -> new ResourceNotFound("Publicacion", "id", beneficiario_id));
+                orElseThrow(() -> new ResourceNotFound("Publicacion", "id", beneficiario_id.toString()));
         familiar.setBeneficiario(beneficiario);
         Familiar newFamiliar = familiarRepository.save(familiar);
         return mapearDTO(newFamiliar);
@@ -47,7 +48,7 @@ public class FamiliarServiceImpl implements FamiliarService {
      * @return todos los familiares asociados al beneficiario
      */
     @Override
-    public List<FamiliarDTO> getAllFamiliaresPerBeneficarioId(long beneficiario_id) {
+    public List<FamiliarDTO> getAllFamiliaresPerBeneficarioId(UUID beneficiario_id) {
         List<Familiar> familiars = familiarRepository.findByBeneficiarioId(beneficiario_id);
         return familiars.stream().map(familiar -> mapearDTO(familiar)).collect(Collectors.toList());
     }
@@ -58,12 +59,12 @@ public class FamiliarServiceImpl implements FamiliarService {
      * @return
      */
     @Override
-    public FamiliarDTO getFamiliarById(long beneficiario_id, long familiar_id) {
+    public FamiliarDTO getFamiliarById(UUID beneficiario_id, long familiar_id) {
         Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).
-                orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id));
+                orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id.toString()));
 
         Familiar familiar = familiarRepository.findById(familiar_id).
-                orElseThrow(() -> new ResourceNotFound("Familiar", "id", beneficiario_id));
+                orElseThrow(() -> new ResourceNotFound("Familiar", "id", beneficiario_id.toString()));
 
         if (!familiar.getBeneficiario().getId().equals(beneficiario.getId())) {
             throw new AdraAppException(HttpStatus.BAD_REQUEST, "El familiar no tiene beneficiario");
@@ -76,12 +77,12 @@ public class FamiliarServiceImpl implements FamiliarService {
      * @param familiar_id
      */
     @Override
-    public void deleteFamiliar(long beneficiario_id, long familiar_id) {
+    public void deleteFamiliar(UUID beneficiario_id, long familiar_id) {
         Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).
-                orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id));
+                orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id.toString()));
 
         Familiar familiar = familiarRepository.findById(familiar_id).
-                orElseThrow(() -> new ResourceNotFound("Familiar", "id", beneficiario_id));
+                orElseThrow(() -> new ResourceNotFound("Familiar", "id", beneficiario_id.toString()));
 
         if (!familiar.getBeneficiario().getId().equals(beneficiario.getId())) {
             throw new AdraAppException(HttpStatus.BAD_REQUEST, "El familiar no tiene beneficiario");
@@ -96,12 +97,12 @@ public class FamiliarServiceImpl implements FamiliarService {
      * @return
      */
     @Override
-    public FamiliarDTO updateFamiliar(FamiliarDTO familiarDTO, Long beneficiario_id, Long familiar_id) {
+    public FamiliarDTO updateFamiliar(FamiliarDTO familiarDTO, UUID beneficiario_id, Long familiar_id) {
         Beneficiario beneficiario = beneficiarioRepository.findById(beneficiario_id).
-                orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id));
+                orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", beneficiario_id.toString()));
 
         Familiar familiar = familiarRepository.findById(familiar_id).
-                orElseThrow(() -> new ResourceNotFound("Familiar", "id", beneficiario_id));
+                orElseThrow(() -> new ResourceNotFound("Familiar", "id", beneficiario_id.toString()));
 
         if (!familiar.getBeneficiario().getId().equals(beneficiario.getId())) {
             throw new AdraAppException(HttpStatus.BAD_REQUEST, "El familiar no tiene beneficiario");
@@ -113,6 +114,7 @@ public class FamiliarServiceImpl implements FamiliarService {
         familiar.setParentesco(familiarDTO.getParentesco());
         familiar.setSexo(familiarDTO.getSexo());
         familiar.setOtros_documentos(familiarDTO.getOtros_documentos());
+        familiar.setFechanacimiento(familiarDTO.getFechanacimiento());
 
         Familiar familiarUpdate = familiarRepository.save(familiar);
         return mapearDTO(familiarUpdate);

@@ -5,12 +5,15 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "beneficiarios")
@@ -18,9 +21,18 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Beneficiario {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private long id;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(generator = "uuid4")
+    @GenericGenerator(name = "UUID", strategy = "uuid4")
+    @Type(type = "org.hibernate.type.UUIDCharType")
+    @Column(name = "id", updatable = false, nullable = false,columnDefinition = "CHAR(36)")
+//    @Type(type="uuid-char")
+    private UUID id ;
+
     @Column(name = "nombreapellido", nullable = false, unique = true)
     private String nombreapellido;
     @Column(name = "dni")
@@ -83,7 +95,7 @@ public class Beneficiario {
     @JsonManagedReference
     private Set<Alimento> alimentos = new HashSet<>();
 
-    public Beneficiario(long id, String nombreapellido, String dni, String otrosdocumentos, LocalDate fechanacimiento, Integer edad, Integer numeroadra, String nacionalidad, boolean covid, String domicilio, String ciudad, boolean areacte, int telefono, String email, String mensaje, boolean active, String sexo, boolean discapacidad, String categoria, boolean empadronamiento, boolean librofamilia, boolean fotocopiadni, boolean prestaciones, boolean nomnia, boolean certnegativo, boolean aquilerhipoteca, boolean recibos) {
+    public Beneficiario(UUID id, String nombreapellido, String dni, String otrosdocumentos, LocalDate fechanacimiento, Integer edad, Integer numeroadra, String nacionalidad, boolean covid, String domicilio, String ciudad, boolean areacte, int telefono, String email, String mensaje, boolean active, String sexo, boolean discapacidad, String categoria, boolean empadronamiento, boolean librofamilia, boolean fotocopiadni, boolean prestaciones, boolean nomnia, boolean certnegativo, boolean aquilerhipoteca, boolean recibos) {
         this.id = id;
         this.nombreapellido = nombreapellido;
         this.dni = dni;
@@ -117,7 +129,7 @@ public class Beneficiario {
         return Period.between(this.fechanacimiento, LocalDate.now()).getYears();
     }
 
-    public Long getId() {
-        return id;
-    }
+//    public UUID getId() {
+//        return id;
+//    }
 }

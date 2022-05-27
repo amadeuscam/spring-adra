@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +39,7 @@ public class BeneficiarioImpl implements BeneficiarioService {
         System.out.println(Sort.Direction.ASC.name());
         System.out.println(sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()));
 
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.DESC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(numberPage, pageSize, sort);
 
         Page<Beneficiario> beneficiarios = beneficiarioRepository.findAll(pageable);
@@ -58,16 +59,16 @@ public class BeneficiarioImpl implements BeneficiarioService {
     }
 
     @Override
-    public BeneficiarioDTO getBeneficiarioById(long id) {
+    public BeneficiarioDTO getBeneficiarioById(UUID id) {
         Beneficiario beneficiario = beneficiarioRepository.
-                findById(id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", id));
+                findById(id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", id.toString()));
         return mapearDTO(beneficiario);
     }
 
     @Override
-    public BeneficiarioDTO updateBeneficiario(BeneficiarioDTO beneficiarioDTO, long id) {
+    public BeneficiarioDTO updateBeneficiario(BeneficiarioDTO beneficiarioDTO, UUID id) {
         Beneficiario beneficiario = beneficiarioRepository.
-                findById(id).orElseThrow(() -> new ResourceNotFound("Publicacion", "id", id));
+                findById(id).orElseThrow(() -> new ResourceNotFound("Publicacion", "id", id.toString()));
 
         beneficiario.setNombreapellido(beneficiarioDTO.getNombreapellido());
         beneficiario.setDni(beneficiarioDTO.getDni());
@@ -103,9 +104,9 @@ public class BeneficiarioImpl implements BeneficiarioService {
     }
 
     @Override
-    public void deleteBeneficiaioById(long id) {
+    public void deleteBeneficiaioById(UUID id) {
         Beneficiario beneficiario = beneficiarioRepository.
-                findById(id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", id));
+                findById(id).orElseThrow(() -> new ResourceNotFound("Beneficiario", "id", id.toString()));
         beneficiarioRepository.delete(beneficiario);
     }
 

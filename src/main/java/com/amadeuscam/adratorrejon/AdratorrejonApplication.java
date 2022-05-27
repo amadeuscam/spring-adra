@@ -22,7 +22,10 @@ public class AdratorrejonApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowCredentials(true);
+                registry.addMapping("/**")
+                        .allowedMethods("PUT", "DELETE","POST","GET")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowCredentials(true);
             }
         };
     }

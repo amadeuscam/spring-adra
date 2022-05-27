@@ -3,6 +3,7 @@ package com.amadeuscam.adratorrejon.dto;
 import com.amadeuscam.adratorrejon.models.Alimento;
 import com.amadeuscam.adratorrejon.models.Familiar;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,12 +13,14 @@ import javax.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.UUID;
 
 @Setter
 @Getter
 public class BeneficiarioDTO {
 
-    private Long id;
+
+    private String id;
     @NotEmpty
     private String nombreapellido;
     private String dni;
@@ -66,7 +69,8 @@ public class BeneficiarioDTO {
     private boolean aquilerhipoteca;
 
     private boolean recibos;
-    @JsonIgnore
+    //    @JsonIgnore
+//    @JsonProperty(value = "tienebaby", access = JsonProperty.Access.READ_ONLY)
     private boolean tienebaby;
 
     private Integer edad;
@@ -78,10 +82,16 @@ public class BeneficiarioDTO {
     }
 
     public boolean isTienebaby() {
-        return this.familiares.stream().anyMatch(familiar -> familiar.getEdad() < 3);
+        if (this.familiares != null) {
+            return this.familiares.stream().anyMatch(familiar -> familiar.getEdad() < 3);
+        } else {
+            return false;
+        }
+
     }
 
-    public void setTienebaby(boolean tienebaby) {
-        this.tienebaby = tienebaby;
-    }
+//    public void setTienebaby(boolean tienebaby) {
+//        this.tienebaby = tienebaby;
+//    }
+
 }

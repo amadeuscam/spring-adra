@@ -25,7 +25,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioDTO getUserInfo(String usernameoremail) {
         Usuario usuario = usuarioRepository.findByEmailOrUsername(usernameoremail, usernameoremail).
-                orElseThrow(() -> new ResourceNotFound("Usuario", "usernameoremail", 1));
+                orElseThrow(() -> new ResourceNotFound("Usuario", "usernameoremail", "23"));
 
         return mapearDTO(usuario);
     }
