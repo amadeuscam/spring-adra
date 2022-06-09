@@ -50,13 +50,6 @@ public class PdfController {
             for (PDField field : fields) {
                 System.out.println(field.getFullyQualifiedName());
             }
-
-
-            // get the document catalog
-//            PDAcroForm acroForm = pdfDocument.getDocumentCatalog().getAcroForm();
-
-            // as there might not be an AcroForm entry a null check is necessary
-            // Retrieve an individual field and set its value.
             PDTextField apellidos = (PDTextField) acroForm.getField("Nombre y apellidos del representante de la unidad familiar");
             PDTextField DNINIEPasaporte = (PDTextField) acroForm.getField("DNINIEPasaporte 1");
             PDTextField Telefono = (PDTextField) acroForm.getField("Teléfono");
@@ -106,12 +99,9 @@ public class PdfController {
                 acroForm.getField(String.format("2022Tarritos infantiles de fruta_%d", index)).setValue(String.valueOf(s.getAlimento11()));
                 acroForm.getField(String.format("2022Leche entera UHT_%d", index)).setValue(String.valueOf(s.getAlimento12()));
                 acroForm.getField(String.format("2022Aceite de oliva_%d", index)).setValue(String.valueOf(s.getAlimento13()));
-                System.out.println(s.getAlimento1());
+//                System.out.println(s.getAlimento1());
             }
 
-
-            // Save and close the filled out form.
-//            pdfDocument.save("src/main/resources/resources_files/FillFormField.pdf");
             pdfDocument.save(out);
 
             HttpHeaders headers = new HttpHeaders();
