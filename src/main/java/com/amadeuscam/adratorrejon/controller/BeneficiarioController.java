@@ -1,19 +1,30 @@
 package com.amadeuscam.adratorrejon.controller;
 
-import com.amadeuscam.adratorrejon.dto.BeneficiarioDTO;
-import com.amadeuscam.adratorrejon.dto.BeneficiarioResponse;
-import com.amadeuscam.adratorrejon.services.BeneficiarioService;
-import com.amadeuscam.adratorrejon.utils.AppConstants;
-import io.swagger.annotations.ApiOperation;
+import java.util.Collections;
+import java.util.UUID;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.Collections;
-import java.util.UUID;
+import com.amadeuscam.adratorrejon.dto.BeneficiarioDTO;
+import com.amadeuscam.adratorrejon.dto.BeneficiarioResponse;
+import com.amadeuscam.adratorrejon.services.BeneficiarioService;
+import com.amadeuscam.adratorrejon.utils.AppConstants;
+
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/v1/beneficiarios")
@@ -37,6 +48,11 @@ public class BeneficiarioController {
     public ResponseEntity<BeneficiarioDTO> getBeneficiario(@PathVariable(name = "id") String id) {
         System.out.println(UUID.fromString(id));
         return ResponseEntity.ok(beneficiarioService.getBeneficiarioById(UUID.fromString(id)));
+    }
+
+    @GetMapping("/estatisticas")
+    public ResponseEntity<?> getBeneficiarioEstatisticas() {
+        return ResponseEntity.ok(beneficiarioService.getAllBeneficiariosEstatisticas());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
